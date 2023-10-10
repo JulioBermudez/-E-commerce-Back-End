@@ -8,6 +8,7 @@ const { Category, Product } = require("../../models");
 router.get("/", async (req, res) => {
   // find all categories
   try {
+    //This is like do SELECT * FROM category LEFT JOIN product on product.category_id = category.id
     const categoryData = await Category.findAll({
       include: [{ model: Product }],
     });
@@ -63,9 +64,10 @@ router.delete("/:id", async (req, res) => {
   try {
     const categoryData = await Category.destroy({
       where: {
-        id: req.body.id,
+        id: req.params.id
       },
     });
+    res.status(200).json(categoryData)
   } catch (err) {
     res.status(500).json(err);
   }
